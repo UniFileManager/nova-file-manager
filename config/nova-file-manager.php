@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Laravel\Nova\Http\Middleware\Authenticate;
 use UniFileManager\Core\Support\ConfigStorageAreaResolver;
 use UniFileManager\Core\Support\DefaultFileManagerAuthorizer;
 
@@ -13,7 +14,7 @@ return [
      */
     'route_prefix' => 'nova-vendor/unifilemanager/nova-file-manager',
 
-    'middleware' => ['nova'],
+    'middleware' => ['nova', Authenticate::class],
 
     /*
      * Storage areas are resolved on the server. The browser may request an area
