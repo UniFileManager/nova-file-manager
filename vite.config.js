@@ -13,7 +13,13 @@ export default defineConfig({
       output: {
         entryFileNames: 'js/[name].js',
         assetFileNames: 'css/[name][extname]',
+        format: 'iife',
+        name: 'UniFileManagerNovaFileManager',
+        globals: {
+          vue: 'Vue',
+        },
       },
+      external: ['vue'],
     },
   },
 })

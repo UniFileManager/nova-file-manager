@@ -4,4 +4,4 @@
 /.pest-cache/
 /.DS_Store
 /node_modules/
-/dist/
+/.zsh_history
