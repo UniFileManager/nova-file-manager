@@ -13,6 +13,16 @@ final class UniFilePicker extends Field
 
     public $component = 'uni-file-picker';
 
+    public function __construct($name, mixed $attribute = null, ?callable $resolveCallback = null)
+    {
+        parent::__construct($name, $attribute, $resolveCallback);
+
+        $this->withMeta([
+            'allowedMimeTypes' => self::DEFAULT_ALLOWED_MIME_TYPES,
+            'clearable' => true,
+        ]);
+    }
+
     public function multiple(bool $condition = true): static
     {
         return $this->withMeta(['multiple' => $condition]);
