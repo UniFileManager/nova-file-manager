@@ -23,6 +23,12 @@
     "pestphp/pest": "^3.0|^4.0",
     "pestphp/pest-plugin-laravel": "^3.0|^4.0"
   },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://nova.laravel.com"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "UniFileManager\\NovaFileManager\\": "src/"

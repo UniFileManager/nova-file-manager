@@ -6,6 +6,7 @@ namespace UniFileManager\NovaFileManager\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
 use UniFileManager\NovaFileManager\NovaFileManagerServiceProvider;
+use UniFileManager\NovaFileManager\Tests\Support\AllowAllFileManagerAuthorizer;
 
 abstract class TestCase extends Orchestra
 {
@@ -24,6 +25,8 @@ abstract class TestCase extends Orchestra
             'root' => 'tenant-a',
             'visibility' => 'private',
         ]);
+        $app['config']->set('nova-file-manager.middleware', []);
+        $app['config']->set('nova-file-manager.authorizer', AllowAllFileManagerAuthorizer::class);
         $app['config']->set('filesystems.disks.testing', [
             'driver' => 'local',
             'root' => storage_path('framework/testing/disks/testing'),
