@@ -103,6 +103,7 @@ UniFilePicker::make('Documents')
 
 - `publicMedia()` browses the configured public storage area.
 - `privateMedia()` browses the configured private storage area.
+- `storageArea('area-name')` browses any custom server-defined storage area.
 - `directory('avatars')` limits the field browser to that folder.
 - `multiple()` stores selected paths as a JSON array string.
 - `imageCardView()` changes multiple selected files from compact rows to cards.
@@ -151,8 +152,9 @@ Enable public media when selected files should be usable on a public website:
 ],
 ```
 
-When both areas are enabled, the File Manager shows a storage switcher. A field
-can target one area with `publicMedia()` or `privateMedia()`.
+When more than one area is enabled, the File Manager shows a storage switcher.
+A field can target one area with `publicMedia()`, `privateMedia()`, or
+`storageArea('area-name')`.
 
 ## File Manager tool
 

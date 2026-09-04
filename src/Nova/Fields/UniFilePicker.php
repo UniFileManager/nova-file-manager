@@ -48,6 +48,11 @@ final class UniFilePicker extends Field
         return $this->withMeta(['directory' => $directory]);
     }
 
+    public function storageArea(?string $area): static
+    {
+        return $this->withMeta(['storageArea' => $area]);
+    }
+
     public function publicMedia(bool $condition = true): static
     {
         if (! $condition) {

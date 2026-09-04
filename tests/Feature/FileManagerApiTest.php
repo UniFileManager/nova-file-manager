@@ -41,6 +41,22 @@ it('returns enabled storage areas for the browser UI', function (): void {
         ->assertJsonPath('data.1.label', 'Public files');
 });
 
+it('lists files from a custom configured storage area', function (): void {
+    config()->set('nova-file-manager.storage_areas.documents', [
+        'enabled' => true,
+        'disk' => 'testing',
+        'root' => 'tenant-documents',
+        'visibility' => 'private',
+    ]);
+
+    Storage::disk('testing')->put('tenant-documents/contract.txt', 'Custom area');
+
+    $this->getJson('/nova-vendor/unifilemanager/nova-file-manager/items?area=documents')
+        ->assertOk()
+        ->assertJsonPath('data.0.name', 'contract.txt')
+        ->assertJsonPath('data.0.path', 'contract.txt');
+});
+
 it('returns validation errors for traversal attempts', function (): void {
     $this->getJson('/nova-vendor/unifilemanager/nova-file-manager/items?path=../secrets')
         ->assertStatus(422)
