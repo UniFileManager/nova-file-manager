@@ -313,15 +313,21 @@
         <form class="ufm-nova__name-form" @submit.prevent="submitNameModal">
           <label>
             Name
-            <input
-              ref="nameInput"
-              v-model="nameValue"
-              class="ufm-nova__input"
-              type="text"
-              autocomplete="off"
-              placeholder="Folder name"
-            />
+            <span class="ufm-nova__input-group" :class="{ 'has-suffix': lockedExtension }">
+              <input
+                ref="nameInput"
+                v-model="nameValue"
+                class="ufm-nova__input"
+                type="text"
+                autocomplete="off"
+                placeholder="Folder name"
+              />
+              <span v-if="lockedExtension" class="ufm-nova__locked-extension">{{ lockedExtension }}</span>
+            </span>
           </label>
+          <p v-if="lockedExtension" class="ufm-nova__field-help">
+            The file extension is kept automatically.
+          </p>
           <p v-if="nameError" class="ufm-nova__error">{{ nameError }}</p>
 
           <footer class="ufm-nova__modal-footer">
@@ -426,6 +432,15 @@ const activeStorageArea = computed(() => storageAreas.value.find((storageArea) =
 const nameModalEyebrow = computed(() => (nameModalMode.value === 'create' ? 'New folder' : 'Rename item'))
 const nameModalTitle = computed(() => (nameModalMode.value === 'create' ? 'Create a folder' : `Rename ${nameModalItem.value?.name ?? 'item'}`))
 const nameModalSubmitLabel = computed(() => (nameModalMode.value === 'create' ? 'Create folder' : 'Save name'))
+const lockedExtension = computed(() => {
+  if (nameModalMode.value !== 'rename' || nameModalItem.value?.type !== 'file') {
+    return ''
+  }
+
+  const extension = fileExtension(nameModalItem.value.name)
+
+  return extension === '' ? '' : `.${extension}`
+})
 
 const filteredItems = computed(() => {
   const term = search.value.trim().toLowerCase()
@@ -551,7 +566,7 @@ async function openCreateFolderModal() {
 async function openRenameModal(item) {
   nameModalMode.value = 'rename'
   nameModalItem.value = item
-  nameValue.value = item.name
+  nameValue.value = item.type === 'file' ? fileBaseName(item.name) : item.name
   nameError.value = ''
   await focusNameInput()
 }
@@ -574,9 +589,12 @@ function closeNameModal() {
 }
 
 async function submitNameModal() {
-  const name = nameValue.value.trim()
+  const baseName = nameValue.value.trim()
+  const name = nameModalMode.value === 'rename' && nameModalItem.value?.type === 'file'
+    ? `${baseName}${lockedExtension.value}`
+    : baseName
 
-  if (name === '') {
+  if (baseName === '') {
     nameError.value = 'Enter a name before saving.'
     return
   }
@@ -826,6 +844,20 @@ function documentKind(item) {
   if (extension === 'txt') return 'text'
 
   return 'file'
+}
+
+function fileExtension(name) {
+  const filename = String(name ?? '').split('/').at(-1)
+  const lastDot = filename.lastIndexOf('.')
+
+  return lastDot > 0 ? filename.slice(lastDot + 1) : ''
+}
+
+function fileBaseName(name) {
+  const filename = String(name ?? '')
+  const lastDot = filename.lastIndexOf('.')
+
+  return lastDot > 0 ? filename.slice(0, lastDot) : filename
 }
 
 function fileLabel(item) {

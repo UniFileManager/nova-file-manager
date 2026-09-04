@@ -272,6 +272,36 @@
   width: 100%;
 }
 
+.ufm-nova__input-group {
+  align-items: stretch;
+  display: flex;
+}
+
+.ufm-nova__input-group.has-suffix .ufm-nova__input {
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  border-top-right-radius: 0;
+}
+
+.ufm-nova__locked-extension {
+  align-items: center;
+  background: var(--ufm-surface-soft);
+  border: 1px solid var(--ufm-border);
+  border-bottom-right-radius: 12px;
+  border-left: 0;
+  border-top-right-radius: 12px;
+  color: var(--ufm-muted);
+  display: inline-flex;
+  font-weight: 800;
+  padding: 0 14px;
+}
+
+.ufm-nova__field-help {
+  color: var(--ufm-muted);
+  font-size: 13px;
+  margin: -6px 0 0;
+}
+
 .ufm-nova__selection-bar {
   align-items: center;
   background: var(--ufm-primary-soft);
